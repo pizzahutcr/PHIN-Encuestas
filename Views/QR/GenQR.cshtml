@@ -1,0 +1,36 @@
+﻿@model Surveys.Models.QR
+
+
+@{
+    ViewBag.Title = "GenQR";
+}
+
+<h2>Generador de QR</h2>
+
+@using (Html.BeginForm("GenQR", "Home", FormMethod.Post))
+{
+    <div>
+        <label for="cod">Código Restaurante:</label>
+        @Html.TextBoxFor(m => m.codRest)
+    </div>
+    <div>
+        <label for="Id">Token Encuesta:</label>
+        @Html.TextBoxFor(m => m.idEncuesta)
+    </div>
+
+    <button type="submit">Generar QR</button>
+}
+
+@if (!string.IsNullOrEmpty(Model.GeneratedUrl))
+{
+    <h3>Generated QR Code:</h3>
+    <img src="@ViewBag.QrCodeImage" class="qr-code" alt="QR Code" />
+}
+
+<style>
+    .qr-code {
+        width: 200px; /* Ajusta el tamaño deseado */
+        height: 200px; /* Ajusta el tamaño deseado */
+    }
+</style>
+

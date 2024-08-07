@@ -1,0 +1,87 @@
+﻿@model Surveys.Models.QR
+
+
+@{
+    ViewBag.Title = "GenQR";
+}
+
+<h2>Generador de QR para encuestas</h2>
+<hr />
+
+@using (Html.BeginForm("Index", "QR", FormMethod.Post))
+{
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div>
+                <label for="Id" class="control-label col-md-2">Encuesta:</label>
+                <div class="col-md-10">
+                    @*@Html.TextBoxFor(m => m.idEncuesta)*@
+                    @*@Html.DropDownList("txtID", (IEnumerable<SelectListItem>)ViewData["misEncuestas"], "--Seleccione--", new { @class = "form-control", @id = "txtID" })*@
+                    @Html.DropDownList("txtID", (SelectList)ViewBag.Enc, "--Seleccione Enc--", new { @id = "txtID" })
+                </div>
+            </div>
+            <div>
+                <label for="cod" class="control-label col-md-2">Restaurante:</label>
+                <div class="col-md-10">
+                    @*@Html.TextBoxFor(m => m.codRest)*@
+                    @*@Html.DropDownList("txtCodRest", (IEnumerable<SelectListItem>)ViewData["misTiendas"], "--Seleccione--", new { @class = "form-control", @id = "txtCodRest" })*@
+                </div>
+            </div>
+            <div>
+                <label for="City">City:</label>
+                @Html.DropDownList("txtCodRest", new SelectList(Enumerable.Empty<SelectListItem>()), "--Seleccione--", new { @id = "txtCodRest" })
+            </div>
+
+            <br />
+            <button type="submit" class="btn my-1 btn-color font-weight-bold">Generar QR</button>
+        </div>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.QrCodeImage))
+{
+    <h3>Generated QR Code:</h3>
+    <img src="@ViewBag.QrCodeImage" class="qr-code" alt="QR Code" />
+}
+
+<style>
+    .qr-code {
+        width: 200px; /* Ajusta el tamaño deseado */
+        height: 200px; /* Ajusta el tamaño deseado */
+    }
+
+    .btn-color {
+        background-color: #c72a2a !important;
+        color: #fff !important;
+    }
+
+    .text-white {
+        color: #fff !important;
+    }
+
+    .font-weight-bold {
+        font-weight: 700 !important;
+    }
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#txtID').change(function () {
+            var idEncuesta = $(this).val();
+            $('#txtCodRest').empty();
+            if (idEncuesta) {               
+                $.getJSON('@Url.Action("GetCities", "QR")', { token: idEncuesta }, function (data) {
+                    $('#txtCodRest').append($('<option>').text("--Seleccione--").attr('value', ''));
+                    $.each(data, function (i, local) {
+                        $('#txtCodRest').append($('<option>').text(local.nombre).attr('value', local.codRest));
+                    });
+                });
+            } else {
+                $('#txtCodRest').append($('<option>').text("--Seleccione--").attr('value', ''));
+            }
+        });
+    });
+</script>
+
+

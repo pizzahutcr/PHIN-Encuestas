@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "";
+}
+
+<div class="form-container">
+    <div class="form-box">
+        <div class="container mt-5">
+            <h4>@ViewBag.Message</h4>
+        </div>
+    </div>
+</div>
+    @*<h2 id="title">@ViewBag.Title.</h2>*@
+
+
+
+
+    @section Scripts {
+        <style>
+        body {
+            /* The image used */
+            background-image: url('@ViewBag.BackgroundImageUrl');
+            /* Full height */
+            height: 100%;
+            /* Center and scale the image */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            /*overflow: hidden;*/ /* Evitar el desplazamiento del body */
+        }
+        .form-container {
+            /*display: flex;*/
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full viewport height */
+            /*overflow: auto;*/ /* Permitir desplazamiento en el contenedor */
+        }
+
+        .form-box {
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        /* max-width: 400px;*/
+            width: 100%;
+        }
+
+        </style>
+    }

@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("Styles", required: false)
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Estilos adicionales */
+        .pregunta {
+            margin-bottom: 20px;
+        }
+    </style>
+
+</head>
+<body>
+    <!--<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+        <div class="container">
+            @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>-->
+    @*<li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+        <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>*@
+    <!--</ul>
+            </div>
+        </div>
+    </nav>-->
+    <header>
+        <!--<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">-->
+            @* style="background-color:#c72a2a !important; *@<!--">
+            <div class="container" style="margin-left: inherit;">
+                <p class="site-title">
+                    <a href="@Url.Action("Index", "Home", new { language = "es" })">
+                        <img src="https://img.clickeat.online/001//assets/img/logo_white.svg?v=2.1.8" class="logo" style="height: 70px !important; width: 200px !important" alt="logotipo" />
+                    </a>
+                </p>-->
+                <!--<div class="container-fluid">-->
+                    <!--quitar color-->
+                    <!--<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>-->
+            <!--</div>
+        </nav>-->
+    </header>
+
+    <div class="container body-content" style="padding-top: 50px;margin-top: auto;">
+        @RenderBody()
+        <br />
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Pizza Hut -1.6</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

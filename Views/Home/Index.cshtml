@@ -1,0 +1,409 @@
+﻿@model Surveys.Models.Encuesta
+
+@{
+    ViewBag.Title = "Encuesta";
+}
+
+@*<div class="formulario">
+    <div class="container mt-5">*@
+<div class="form-container">
+    <div class="form-box">
+        @using (Html.BeginForm("GuardarRespuestas", "Home", FormMethod.Post, new { @id = "surveyForm" }))
+        {
+            if (Model != null)
+            {
+                int numero = 1;
+                @*@Html.HiddenFor(m => m.IdEncuesta, "txtIdEncuesta")*@
+                @Html.Hidden("txtIdEncuesta", Model.IdEncuesta, new { @id = "txtIdEncuesta" })
+                @Html.Hidden("txtCodRest", Model.codRest, new { @id = "txtCodRest" })
+                @Html.Hidden("txtUrl", Model.urlFondo, new { @id = "txtUrl" })
+
+                <h2><strong>@TempData["DesStore"]</strong></h2>
+                <h4>@Model.descripcion</h4>
+                <p>@TempData["Sub"]</p>
+                <p><span class="text-danger">* Campo obligatorio</span></p>
+
+                <div class="form-group">
+                    @foreach (var pregEnc in Model.ListPreguntasEncts)
+                    {
+                        if (pregEnc.opcEncs.componente == "text")
+                        {
+                            <div>
+                                <label>@numero. @pregEnc.descripcion<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="pregEnc_txt[@pregEnc.IdPregEnc]" required maxlength="220" />
+                            </div>
+                            <br />
+                        }
+                        else if (pregEnc.opcEncs.componente == "checkbox")
+                        {
+                            <div>
+                                <label>@numero. @pregEnc.descripcion<span class="text-danger">*</span></label>
+
+                            </div>
+                            foreach (var opcion in pregEnc.opcEncs.listaOpcDet)
+                            {
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="opcion_@opcion.idOpcDet" name="pregEnc_chk[@pregEnc.IdPregEnc]" value="@opcion.descripcion" required>
+                                    <label class="form-check-label" for="opcion_@opcion.idOpcDet">
+                                        @opcion.descripcion
+                                    </label>
+                                </div>
+
+
+                            }
+                            <br />
+                        }
+                        else if (pregEnc.opcEncs.componente == "radio")
+                        {
+                            <div>
+                                <label>@numero. @pregEnc.descripcion<span class="text-danger">*</span></label>
+                            </div>
+                            foreach (var opcion in pregEnc.opcEncs.listaOpcDet)
+                            {
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" id="opcion_@opcion.idOpcDet" name="pregEnc_rad[@pregEnc.IdPregEnc]" value="@opcion.descripcion" required>
+                                    <label class="form-check-label" for="opcion_@opcion.idOpcDet">
+                                        @opcion.descripcion
+                                    </label>
+                                </div>
+                            }
+                            <br />
+                        }
+                        else if (pregEnc.opcEncs.componente == "date")
+                        {
+                            <div>
+                                <label>@numero. @pregEnc.descripcion<span class="text-danger">*</span></label>
+                                @Html.TextBox("pregEnc_dat[" + @pregEnc.IdPregEnc + "]", "", new { type = "date", @class = "form-control", @required = "required" })
+                            </div>
+                            <br />
+                        }
+                        else if (pregEnc.opcEncs.componente == "textarea")
+                        {
+                            <div>
+                                <label>@numero. @pregEnc.descripcion<span class="text-danger">*</span></label>
+                            </div>
+                            <div>
+                                @Html.TextArea("pregEnc_tar[" + @pregEnc.IdPregEnc + "]", null, new { @class = "form-control", @required = "required", rows = 3, cols = 35, maxlength = 220 })
+                            </div>
+                            <br />
+                        }
+                        else if (pregEnc.opcEncs.componente == "dropDownList")
+                        {
+                            <div>
+                                <label>@numero. @pregEnc.descripcion<span class="text-danger">*</span></label>
+                            </div>
+
+                            <select name="pregEnc_lts[@pregEnc.IdPregEnc]" required>
+                                <option value="">--Seleccione--</option>
+                                @foreach (var opcion in pregEnc.opcEncs.listaOpcDet)
+                                {
+                                    <option value="@opcion.descripcion-@opcion.calificacion" required>@opcion.descripcion</option>
+                                }
+                            </select><br />
+                            <br />
+                        }
+                        numero++;
+
+                    }
+
+                    @*//*****PREGUNTAS-DETALLADAS****@
+
+                    @foreach (var pregEnc in Model.listPreguntasDets)
+                    {
+                        if (pregEnc.opcEncs.componente == "text")
+                        {
+
+                            <label>
+                                @numero. @pregEnc.descripcion
+                                @if (pregEnc.obligatorio)
+                                {
+                                    <span class="text-danger">* Campo obligatorio</span>
+                                }
+                            </label>
+                            <input type="text" class="form-control" name="pregDet_txt[@pregEnc.IdPregunta]" @(pregEnc.obligatorio ? "required" : "") />
+                            <br />
+                        }
+                        else if (pregEnc.opcEncs.componente == "checkbox")
+                        {
+                            <div>
+                                <label>
+                                    @numero. @pregEnc.descripcion
+                                    @if (pregEnc.obligatorio)
+                                    {
+                                        <span class="text-danger">*</span>
+                                    }
+                                </label>
+                            </div>
+
+                            foreach (var opcion in pregEnc.opcEncs.listaOpcDet)
+                            {
+                                <div class="form-check">
+                                    @*<input class="form-check-input" type="checkbox" id="opcion_@opcion.idOpcDet" name="pregDet_chk[@pregEnc.IdPregunta]" value="@opcion.descripcion-@opcion.calificacion" @(pregEnc.obligatorio ? "required" : "")>
+                                    <label class="form-check-label" for="opcion_@opcion.idOpcDet">
+                                        @opcion.descripcion
+                                    </label>*@
+                                    @Html.CheckBox("pregDet_chk[" + pregEnc.IdPregunta + "]", false, new { value = @opcion.descripcion + "-" + @opcion.calificacion, @class = pregEnc.obligatorio ? "required" : "" }) @opcion.descripcion
+                                </div>
+                            }
+                            <br />
+                        }
+                        else if (pregEnc.opcEncs.componente == "radio")
+                        {
+                            <div>
+                                <label>
+                                    @numero. @pregEnc.descripcion
+                                    @if (pregEnc.obligatorio)
+                                    {
+                                        <span class="text-danger">*</span>
+                                    }
+                                </label>
+                            </div>
+                            foreach (var opcion in pregEnc.opcEncs.listaOpcDet)
+                            {
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" id="opcion_@opcion.idOpcDet" name="pregDet_rad[@pregEnc.IdPregunta]" value="@opcion.descripcion-@opcion.calificacion" @(pregEnc.obligatorio ? "required" : "")>
+                                    <label class="form-check-label" for="opcion_@opcion.idOpcDet">
+                                        @opcion.descripcion
+                                    </label>
+                                </div>
+
+                            }
+                            <br />
+                        }
+                        else if (pregEnc.opcEncs.componente == "date")
+                        {
+
+                            <div>
+                                <label>
+                                    @numero. @pregEnc.descripcion  @if (pregEnc.obligatorio)
+                                    {<span class="text-danger">*</span>}
+                                </label>
+                            </div>
+                            @Html.Raw($"<input type='date' name='pregDet_dat[{pregEnc.IdPregunta}]' class='form-control' {(pregEnc.obligatorio ? "required" : "")} />")
+                            <br />
+                        }
+                        else if (pregEnc.opcEncs.componente == "textarea")
+                        {
+                            <div>
+                                <label>
+                                    @numero. @pregEnc.descripcion @if (pregEnc.obligatorio)
+                                    {<span class="text-danger">*</span>}
+                                </label>
+                            </div>
+                            <div>
+                                @*rows = 3, cols = 35, maxlength = 220*@
+                                @Html.Raw($"<textarea name='pregDet_tar[{pregEnc.IdPregunta}]' class='form-control' maxlength = 200 {(pregEnc.obligatorio ? "required" : "")}></textarea>")
+                            </div>
+                            <br />
+                        }
+                        else if (pregEnc.opcEncs.componente == "dropDownList")
+                        {
+                            <div>
+                                <label>
+                                    @numero. @pregEnc.descripcion @if (pregEnc.obligatorio)
+                                    {<span class="text-danger">*</span>}
+                                </label>
+                            </div>
+
+                            <select name="pregDet_lts[@pregEnc.IdPregunta]" required>
+                                <option value="">--Seleccione--</option>
+                                @foreach (var opcion in pregEnc.opcEncs.listaOpcDet)
+                                {
+                                    <option value="@opcion.descripcion-@opcion.calificacion" @(pregEnc.obligatorio ? "required" : "")>@opcion.descripcion</option>
+                                }
+                            </select><br />
+                            <br />
+
+                        }
+                        numero++;
+
+                    }
+
+                </div>
+                <!-- Paginación -->
+                @*<ul class="pagination">
+                    @if (Model.PaginaActual > 1)
+                    {
+                        <li><a href="@Url.Action("MostrarEncuesta", new { pagina = Model.PaginaActual - 1 })">&laquo; Anterior</a></li>
+                    }
+                    @for (int i = 1; i <= Math.Ceiling((double)Model.TotalPreguntas / Model.PreguntasPorPagina); i++)
+                    {
+                        <li class="@(i == Model.PaginaActual ? "active" : "")">
+                            <a href="@Url.Action("MostrarEncuesta", new { pagina = i })">@i</a>
+                        </li>
+                    }
+                    @if (Model.PaginaActual < Math.Ceiling((double)Model.TotalPreguntas / Model.PreguntasPorPagina))
+                    {
+                        <li><a href="@Url.Action("MostrarEncuesta", new { pagina = Model.PaginaActual + 1 })">Siguiente &raquo;</a></li>
+                    }
+                </ul>*@
+
+
+                //el botón sin paginación
+                <button class="btn my-1 btn-color font-weight-bold" type="submit">
+                    <img src="@Url.Content("~/assets/img/pizza_3755831.png")" alt="Button Icon" width="30" height="30" />
+                    Enviar
+                </button>
+
+                @*<div>
+                    @if (Model.PaginaActual > 1)
+                    {
+                        <button type="submit" name="nav" value="prev" class="btn btn-secondary">Anterior</button>
+                    }
+
+                    @if (Model.PaginaActual < Model.TotalPreguntas)
+                    {
+                        <button type="submit" name="nav" value="next" class="btn btn-primary">Siguiente</button>
+                    }
+                    else
+                    {
+                        <button type="submit" name="nav" value="submit" class="btn btn-success">Enviar</button>
+                    }
+                </div>*@
+
+            }//fin if model
+            else
+            {
+                <p>La búsqueda no coincide con ninguna encuesta</p>
+            }
+        }
+    </div>
+    <br />
+    <br />
+    <br />
+</div>
+
+@section Scripts {
+
+    <script>
+        document.getElementById('surveyForm').addEventListener('submit', function (e)
+        {
+            let isValid = true;
+
+            document.querySelectorAll('.form-group').forEach(function (group)
+            {
+                //const inputs = group.querySelectorAll('input[required], select[required], textarea[required]');
+                const inputs = group.querySelectorAll('.required');
+                const inputType = inputs[0]?.type;
+
+                    if (inputType === 'checkbox' || inputType === 'radio')
+                    {
+                        let isChecked = false;
+                        inputs.forEach(function (input)
+                        {
+                            if (input.checked) {
+                                isChecked = true;
+                            }
+                        });
+                        if (!isChecked) {
+                            isValid = false;
+                            group.classList.add('has-error');
+                            group.querySelector('label').style.color = 'red';
+                        } else {
+                            group.classList.remove('has-error');
+                            group.querySelector('label').style.color = '';
+                        }
+                    }
+                    else
+                    {
+                        if (!input.value.trim()) {
+                            isValid = false;
+                            input.classList.add('has-error');
+                            //input.nextElementSibling.innerText = "Este campo es obligatorio.";
+                        } else {
+                            input.classList.remove('has-error');
+                            //input.nextElementSibling.innerText = "";
+                        }
+
+                   
+                     }
+            });
+         
+
+            if (!isValid) {
+                e.preventDefault();
+                alert('Favor complete todos los datos requeridos');
+            }
+        });
+
+    </script>
+
+    <style>
+        /*body {
+            background-image: url('https://lists.office.com/Images/1789bcff-1d50-47eb-9baf-ac05d78d2ea5/edcdd600-5e2f-4562-a2b8-f3aa21193e5a/T8HCG5ZDDOFBPV17F330F9JIO5/4bce29fc-ca2a-4815-89e5-70a21f956b58');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;*/
+            /* height: 100vh;*/ /* Ajusta la altura según sea necesario */
+            /*margin: 0;*/ /* Elimina el margen por defecto del body */
+            /*padding: 0;*/ /*Elimina el padding por defecto del body */
+            /*display: flex;
+            justify-content: center;
+            align-items: center;*/
+            /*width: 100%;*/
+            /*height: 100%;
+        }*/
+
+        body {
+            /* The image used */
+            background-image: url('@ViewBag.BackgroundImageUrl');
+            /* Full height */
+            height: 100%;
+            /* Center and scale the image */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+           /* overflow: hidden; *//* Evitar el desplazamiento del body */
+        }
+        .form-container {
+            display: @ViewBag.ApplyDisplay; /*contents;*/ /*flex;*/
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full viewport height */
+            /* overflow: auto; */ /* Permitir desplazamiento en el contenedor */
+        }
+
+        .form-box {
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            /* max-width: 400px;*/
+            width: 100%;
+           /* overflow: auto;*/
+        }
+
+
+        /****************/
+
+        .formulario {
+            background-color: rgba(255, 255, 255, 0.8); /* Color blanco con transparencia del 80% */
+            padding: 20px;
+            border-radius: 10px; /*Ajusta el redondeo de los bordes según sea necesario */
+            /*width: 400px;*/ /*Ajusta el ancho del formulario según sea necesario */
+            text-align: left; /* Alinea el texto y los elementos a la izquierda */
+        }
+
+        /*.formulario form {*/
+        /* Estilos adicionales para el formulario si es necesario */
+        /*}*/
+
+        .required {
+            border: 1px solid red;
+        }
+        .btn-color {
+            background-color: #c72a2a !important;
+            color: #fff !important;
+        }
+
+        .text-white {
+            color: #fff !important;
+        }
+
+        .font-weight-bold {
+            font-weight: 700 !important;
+        }
+    </style>
+}

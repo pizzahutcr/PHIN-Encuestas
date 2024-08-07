@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "ShowQR";
+}
+
+<h2>ShowQR</h2>
+
+
+<h2>Generador de QR</h2>
+
+<img src="@Url.Action("GenerarQr", "Home", new { url = ViewBag.Url })" class="qr-code" alt="QR Code" />
+
+<style>
+    .qr-code {
+        width: 200px; /* Ajusta el tamaño deseado */
+        height: 200px; /* Ajusta el tamaño deseado */
+    }
+</style>

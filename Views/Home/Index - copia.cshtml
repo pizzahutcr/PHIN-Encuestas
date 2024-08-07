@@ -1,0 +1,150 @@
+﻿@model Surveys.Models.Encuesta
+
+@{
+    ViewBag.Title = "Encuesta";
+}
+
+<div class="formulario">
+    <div class="container mt-5">
+        @using (Html.BeginForm("GuardarRespuestas", "Home", FormMethod.Post))
+        {
+            if (Model != null)
+            {
+                @Html.HiddenFor(m => m.IdEncuesta)
+
+                <h2><strong>@TempData["DesStore"]</strong></h2>
+                <h3>@Model.descripcion</h3>
+                <p>¡Gracias por elegir Pizza Hut! Por favor, complete esta breve encuesta sobre su experiencia en nuestro restaurante; su opinión es muy valiosa para nosotros.</p>
+                <div class="form-group">
+                    @foreach (var pregEnc in Model.ListPreguntasEncts)
+                    {
+                        if (pregEnc.opcEncs.componente == "text")
+                        {
+
+                            <label>@pregEnc.descripcion</label>
+                            @*<input type="text" name="@pregEnc.idTipoResp" />*@
+                            <input type="text" class="form-control" name="pregEnc_txt[@pregEnc.IdPregEnc]" />
+                        }
+                        else if (pregEnc.opcEncs.componente == "checkbox")
+                        {
+                            <div>
+                                <label>@pregEnc.descripcion</label>
+                            </div>
+                            foreach (var opcion in pregEnc.opcEncs.listaOpcDet)
+                            {
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="opcion_@opcion.idOpcDet" name="pregEnc_chk[@pregEnc.IdPregEnc]" value="@opcion.idOpcDet">
+                                    <label class="form-check-label" for="opcion_@opcion.idOpcDet">
+                                        @opcion.descripcion
+                                    </label>
+                                </div>
+
+                            }
+                        }
+                        else if (pregEnc.opcEncs.componente == "radio")
+                        {
+                            <div>
+                                <label>@pregEnc.descripcion</label>
+                            </div>
+                            foreach (var opcion in pregEnc.opcEncs.listaOpcDet)
+                            {
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" id="opcion_@opcion.idOpcDet" name="pregEnc_rad[@pregEnc.IdPregEnc]" value="@opcion.idOpcDet">
+                                    <label class="form-check-label" for="opcion_@opcion.idOpcDet">
+                                        @opcion.descripcion
+                                    </label>
+                                </div>
+
+                            }
+                        }
+
+                    }
+                    @*//*****PREGUNTAS-DETALLADAS****@
+
+                    @foreach (var pregEnc in Model.listPreguntasDets)
+                    {
+                        if (pregEnc.opcEncs.componente == "text")
+                        {
+
+                            <label>@pregEnc.descripcion</label>
+                            <input type="text" class="form-control" name="pregDet_txt_@pregEnc.IdPregunta" />
+
+                        }
+                        else if (pregEnc.opcEncs.componente == "checkbox")
+                        {
+                            <div>
+                                <label>@pregEnc.descripcion</label>
+                            </div>
+
+                            foreach (var opcion in pregEnc.opcEncs.listaOpcDet)
+                            {
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="opcion_@opcion.idOpcDet" name="pregDet_chk[@pregEnc.IdPregunta]" value="@opcion.idOpcDet">
+                                    <label class="form-check-label" for="opcion_@opcion.idOpcDet">
+                                        @opcion.descripcion
+                                    </label>
+                                </div>
+                            }
+                        }
+                        else if (pregEnc.opcEncs.componente == "radio")
+                        {
+                            <div>
+                                <label>@pregEnc.descripcion</label>
+                            </div>
+                            foreach (var opcion in pregEnc.opcEncs.listaOpcDet)
+                            {
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" id="opcion_@opcion.idOpcDet" name="pregDet_rad[@pregEnc.IdPregunta]" value="@opcion.idOpcDet">
+                                    <label class="form-check-label" for="opcion_@opcion.idOpcDet">
+                                        @opcion.descripcion
+                                    </label>
+                                </div>
+
+                            }
+                        }
+                    }
+                </div>
+                <input type="submit" value="Enviar" />
+
+            }//fin if model
+            else
+            {
+                <p>No hay datos que mostrar</p>
+            }
+        }
+    </div>
+    <br />
+    <br />
+    <br />
+</div>
+
+@section Scripts {
+    <style>
+        body {
+            background-image: url('https://lists.office.com/Images/1789bcff-1d50-47eb-9baf-ac05d78d2ea5/edcdd600-5e2f-4562-a2b8-f3aa21193e5a/T8HCG5ZDDOFBPV17F330F9JIO5/4bce29fc-ca2a-4815-89e5-70a21f956b58');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            /* height: 100vh;*/ /* Ajusta la altura según sea necesario */
+            margin: 0; /* Elimina el margen por defecto del body */
+            padding: 0; /*Elimina el padding por defecto del body */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .formulario {
+            background-color: rgba(255, 255, 255, 0.8); /* Color blanco con transparencia del 80% */
+            padding: 20px;
+            border-radius: 10px; /*Ajusta el redondeo de los bordes según sea necesario */
+            /*width: 400px;*/ /*Ajusta el ancho del formulario según sea necesario */
+            text-align: left; /* Alinea el texto y los elementos a la izquierda */
+        }
+
+        /*.formulario form {*/
+        /* Estilos adicionales para el formulario si es necesario */
+        /*}*/
+    </style>
+}
