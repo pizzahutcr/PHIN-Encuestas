@@ -242,7 +242,7 @@
 
 
                 //el botón sin paginación
-                <button class="btn my-1 btn-color font-weight-bold" type="submit">
+                <button class="btn my-1 btn-color font-weight-bold" type="submit" id="btnEnviar" name="btnEnviar">
                     <img src="@Url.Content("~/assets/img/pizza_3755831.png")" alt="Button Icon" width="30" height="30" />
                     Enviar
                 </button>
@@ -268,6 +268,13 @@
             {
                 <p>La búsqueda no coincide con ninguna encuesta</p>
             }
+            <!-- Overlay y Spinner -->
+            <div id="form-overlay1" style="display:none;">
+                <div class="spinner-container">
+                    <img src="https://img.clickeat.online/001/images_uploaded/plantillaimagen/748-20211201105202.svg?v=2.2.2" alt="Cargando..." class="spinner-image" />
+                    <p class="spinner-text">Guardando sus respuestas, por favor espere...</p>
+                </div>
+            </div>
         }
     </div>
     <br />
@@ -306,23 +313,38 @@
                             group.querySelector('label').style.color = '';
                         }
                     }
-                    else
-                    {
-                        if (!input.value.trim()) {
-                            isValid = false;
-                            input.classList.add('has-error');
-                            //input.nextElementSibling.innerText = "Este campo es obligatorio.";
-                        } else {
-                            input.classList.remove('has-error');
-                            //input.nextElementSibling.innerText = "";
-                        }
+                    //else
+                    //{
+                    //    if (!input.value.trim()) {
+                    //        isValid = false;
+                    //        input.classList.add('has-error');
+                    //        //input.nextElementSibling.innerText = "Este campo es obligatorio.";
+                    //    } else {
+                    //        input.classList.remove('has-error');
+                    //        //input.nextElementSibling.innerText = "";
+                    //    }
 
                    
-                     }
+                    // }
             });
          
+            if (isValid) {
+                // Mostrar el spinner si el formulario es válido
+                // document.getElementById('spinner').style.display = 'block';
+                // Mostrar el overlay con el spinner y deshabilitar el botón de enviar
+                $('#form-overlay1').show();
+                $('#btnEnviar').prop('disabled', true);
 
-            if (!isValid) {
+                // Simular un proceso de envío
+                setTimeout(function () {
+                    // Ocultar el spinner después de completar la operación
+                    //document.getElementById('spinner').style.display = 'none';
+                    $('#form-overlay1').hide();
+                    //$('#btnEnviar').prop('disabled', false);
+                    // Enviar el formulario manualmente
+                    e.target.submit();
+                }, 3000); // Simulando un retardo de 3 segundos
+            } else {
                 e.preventDefault();
                 alert('Favor complete todos los datos requeridos');
             }

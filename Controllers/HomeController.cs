@@ -377,7 +377,7 @@ namespace Surveys.Controllers
         }
         public ActionResult Completada()//Encuesta completada
         {
-            ViewBag.Message = TempData["msj"]; //"Gracias por completar la encuesta";
+            //ViewBag.Message = TempData["msj"]; //"Gracias por completar la encuesta";
             // Recupera los parámetros de TempData
             string Url = TempData["Url"] as string;
             //int param2 = TempData.ContainsKey("Param2") ? (int)TempData["Param2"] : 0;
@@ -390,6 +390,16 @@ namespace Surveys.Controllers
             {
                 ViewBag.BackgroundImageUrl = Url;//asignar el fondo q tiene en a bd
             }
+            var mensaje = TempData["msj"] as string;//para separar el mensaje de cierre
+            var temp = mensaje.Split('.');
+            ViewBag.Message = temp;
+
+
+            //List<string> myList = new List<string> { "element1", "element2",
+            //                             "element3", "element4",
+            //                             "element5",
+            //                           };
+            //ViewBag.MyVariable = myList.ToArray();
             return View();
         }
 
